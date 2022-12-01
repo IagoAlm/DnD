@@ -1,0 +1,9 @@
+{
+    "name": "Warren",
+    "strength": 18,
+    "dexterity": 12,
+    "armor": "half plate",
+    "weapon": "maul",
+    "shield": false,
+    "HP": 56
+}
