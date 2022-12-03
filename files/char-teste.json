@@ -1,0 +1,9 @@
+{
+    "name": "Boneco",
+    "strength": 12,
+    "dexterity": 18,
+    "armor": "studded leather",
+    "weapon": "dagger",
+    "shield": true,
+    "HP": 56
+}
