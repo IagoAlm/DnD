@@ -1,13 +1,18 @@
 import json
 import random
 import re
+import sys
 from itertools import cycle
 
 
 def abrirArq(nome):
-    with open(f"files//{nome}", "r", encoding="utf8") as fd:
-        arq = json.load(fd)
-    return arq
+    try:
+        with open(f"{nome}", "r", encoding="utf8") as fd:
+            arq = json.load(fd)
+        return arq
+    except:
+        print(f"Não foi possível abrir o arqvuivo {nome}")
+        return False
 
 
 def caractArma(arma):
@@ -34,6 +39,44 @@ def caracArmd(armadura):
         tipo = armaduras[armadura]['type']
 
     return (acBase, tipo)
+
+
+def verifAtr(personagem, armas, armaduras):
+    controle = ''
+    listaAtr = ["name", "strength", "dexterity",
+                "armor", "weapon", "shield", "HP"]
+
+    for item in listaAtr:
+        if item not in personagem:
+            print("A ficha do personagem está incompleta")
+            return False
+
+    for item in personagem:
+        if personagem[item] == '':
+            print(f"O campo '{item}' está vazio")
+            return False
+
+        if item == "armor":
+            if personagem[item] not in armaduras:
+                print(
+                    f"A armadura '{personagem[item]}' não existe na lista de armaduras")
+                return False
+
+        if item == "weapon":
+            if personagem[item] not in armas:
+                print(
+                    f"A armadura '{personagem[item]}' não existe na lista de armas")
+                return False
+        if item == "strength" or item == "dexterity":
+            if personagem[item] > 20 or personagem[item] < 1:
+                print(
+                    f"O valor do atributo '{item}' tem que estar entre 1 e 20")
+                return False
+        if item == "shield":
+            if type(personagem[item]) != bool:
+                print(
+                    f"O '{item}' tem de ser true ou false")
+                return False
 
 
 def atrPersonagem(personagem):
@@ -83,9 +126,14 @@ def combate(personagem1, personagem2):
     ordem = list()
 
     if personagem1['dexterity'] > personagem2['dexterity']:
-        ordem = (personagem1, personagem2)
+        ordem = [personagem1, personagem2]
     elif personagem1['dexterity'] < personagem2['dexterity']:
-        ordem = (personagem2, personagem1)
+        ordem = [personagem2, personagem1]
+    else:
+        aleat = [personagem1, personagem2]
+        ordem = random.sample(aleat,
+                              len(aleat))
+        print(ordem)
 
     ciclo = cycle([0, 1])
 
@@ -128,11 +176,21 @@ def combate(personagem1, personagem2):
             f"\nO vencedor do combate foi {personagem1['name']} com {personagem1['HP']} de vida")
 
 
-ficha1 = abrirArq("char-warren.json")
-ficha2 = abrirArq("char-teste.json")
+ficha1 = abrirArq(sys.argv[1])
+ficha2 = abrirArq(sys.argv[2])
 
 armas = abrirArq("weapons.json")
 armaduras = abrirArq("armor.json")
 atributos = abrirArq("attributes.json")
 
-combate(atrPersonagem(ficha1), atrPersonagem(ficha2))
+if ficha1 != False and ficha2 != False and armas != False and armaduras != False and atributos != False:
+    if verifAtr(ficha1, armas, armaduras) == False:
+        print(f"Falha na {sys.argv[1]}")
+    elif verifAtr(ficha2, armas, armaduras) == False:
+        print(f"Falha na {sys.argv[2]}")
+    else:
+        try:
+            combate(atrPersonagem(ficha1), atrPersonagem(ficha2))
+        except:
+            print(
+                "Erro na execução, verifique os .json de armas, armaduras e atributos")
