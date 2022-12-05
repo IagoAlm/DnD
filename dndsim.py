@@ -133,7 +133,6 @@ def combate(personagem1, personagem2):
         aleat = [personagem1, personagem2]
         ordem = random.sample(aleat,
                               len(aleat))
-        print(ordem)
 
     ciclo = cycle([0, 1])
 
