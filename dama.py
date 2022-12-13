@@ -60,6 +60,19 @@ def verAbaixo(tabuleiro, linha, i):
     return (esquerdaInt, direitaInt)
 
 
+def tradut(coordenadas):
+    coordenadas = list(coordenadas)
+    lista_jogadas = list()
+    for item in coordenadas:
+
+        linha = str((int(item[0]) + 1))
+        coluna = string.ascii_lowercase[int(item[1])]
+        traduzid = linha + coluna
+        lista_jogadas.append(traduzid)
+    print(coordenadas)
+    print(lista_jogadas)
+
+
 """
 Necessita de uma função para interpretar a saida para o usuário, estilo: 
 ('43', '45') para ('5d','5f') quando for "verAcima" +1 para o usuário e um filtro que passe de número (index da lista de letra para letra) 
@@ -73,8 +86,8 @@ def verMovimento(tabuleiro, linha, jogador):
             if tabuleiro[linha][i] == 'b':
                 print(verAcima(tabuleiro, linha, i))
             if tabuleiro[linha][i] == 'B':
-                print(verAcima(tabuleiro, linha, i))
-                print(verAbaixo(tabuleiro, linha, i))
+                tradut(verAcima(tabuleiro, linha, i))
+                tradut(verAbaixo(tabuleiro, linha, i))
 
     if jogador == 'a':
         for i in range(len(tabuleiro[5])):
