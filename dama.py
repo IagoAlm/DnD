@@ -1,93 +1,25 @@
 import sys
 import string
+from funcDama import *
 entr1 = 'aaaaaaaaaaaa........bbbbbbbbbbbb'
-entr = 'aaaaaaaa......B.....acbdefghijkl'
+entr2 = 'aaaaaaaa....B.B.....acbdefghijkl'
+entr = 'aaaaa...aaaa...B.aaa....efghijkl'
 
 
-def lerInput(entrada):
-    linha = list()
-    tabuleiro = list()
-    coluna = 1
-    contr = 0
-    fileira = 1
-    for i in range(0, len(entrada)*2, 1):
-        if fileira % 2 != 0:
-            if coluna % 2 == 0:
-                linha.append(entrada[contr])
-                contr += 1
-            else:
-                linha.append(' ')
-
-        elif fileira % 2 == 0:
-            if coluna % 2 != 0:
-                linha.append(entrada[contr])
-                contr += 1
-            else:
-                linha.append(' ')
-
-        if coluna < 8:
-            coluna = coluna + 1
-        else:
-            tabuleiro.append(linha)
-            linha = []
-            coluna = 1
-            fileira = fileira + 1
-    return tabuleiro
-
-
-def verAcima(tabuleiro, linha, i):
-    if tabuleiro[linha-1][i-1] == '.' and i-1 >= 0:
-        esquerdaInt = str(linha-1)
-        esquerdaInt = esquerdaInt + str(i-1)
-        #esquerdaInt = esquerdaInt + list(string.ascii_lowercase)[i-1]
-    if tabuleiro[linha-1][i+1] == '.' and i-1 <= 7:
-        direitaInt = str(linha-1)
-        direitaInt = direitaInt + str(i+1)
-        #direitaInt = direitaInt + list(string.ascii_lowercase)[i+1]
-    # o retorno desses dados é 1 a mais na linha
-    return (esquerdaInt, direitaInt)
-
-
-def verAbaixo(tabuleiro, linha, i):
-    if tabuleiro[linha+1][i-1] == '.' and i-1 >= 0:
-        esquerdaInt = str(linha+1)
-        #esquerdaInt = esquerdaInt + list(string.ascii_lowercase)[i-1]
-        esquerdaInt = esquerdaInt + str(i-1)
-    if tabuleiro[linha+1][i+1] == '.' and i-1 <= 7:
-        direitaInt = str(linha+1)
-        direitaInt = direitaInt + str(i+1)
-    # o retorno desses dados é 1 a mais na linha
-    return (esquerdaInt, direitaInt)
-
-
-def tradut(coordenadas):
-    coordenadas = list(coordenadas)
-    lista_jogadas = list()
-    for item in coordenadas:
-
-        linha = str((int(item[0]) + 1))
-        coluna = string.ascii_lowercase[int(item[1])]
-        traduzid = linha + coluna
-        lista_jogadas.append(traduzid)
-    print(coordenadas)
-    print(lista_jogadas)
-
-
-"""
-Necessita de uma função para interpretar a saida para o usuário, estilo: 
-('43', '45') para ('5d','5f') quando for "verAcima" +1 para o usuário e um filtro que passe de número (index da lista de letra para letra) 
-e ('43', '45') para ('5d','5f') quando for "verAbaixo" +1 para o usuário também
-"""
-
-
-def verMovimento(tabuleiro, linha, jogador):
+def jogada(tabuleiro, linha, jogador):
     if jogador == 'b':
         for i in range(len(tabuleiro[linha])):
             if tabuleiro[linha][i] == 'b':
-                print(verAcima(tabuleiro, linha, i))
+                #print(verCapturaAcima(tabuleiro, linha, i))
+                jogadasPossiveis = [x for x in verAcima(
+                    tabuleiro, linha, i)]
+                #print(linha+1, string.ascii_lowercase[i], " pode ir para ", tradutor(jogadasPossiveis), sep='')
             if tabuleiro[linha][i] == 'B':
-                tradut(verAcima(tabuleiro, linha, i))
-                tradut(verAbaixo(tabuleiro, linha, i))
+                print(verCapturaAcima(tabuleiro, linha, i))
+                print(verCapturaAbaixo(tabuleiro, linha, i))
+
+                #jogadasPossiveis = [x for x in verAcima(tabuleiro, linha, i)] + [x for x in verAbaixo(tabuleiro, linha, i)]
+                #print(linha+1, string.ascii_lowercase[i], " pode ir para ", tradutor(jogadasPossiveis), sep='')
 
     if jogador == 'a':
         for i in range(len(tabuleiro[5])):
@@ -99,6 +31,6 @@ def verMovimento(tabuleiro, linha, jogador):
 
 
 tabuleiro = lerInput(entr)
-print(tabuleiro)
-
-verMovimento(tabuleiro, 3, 'b')
+atualizarTabuleiro(tabuleiro)
+# verQuant(tabuleiro)
+#jogada(tabuleiro, 3, 'b')
